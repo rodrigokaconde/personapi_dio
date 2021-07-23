@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -26,13 +25,10 @@ public class PersonService {
     }
 
     public MessageReponseDTO createPerson(PersonDTO personDTO){
-        Person personToSave = personMapper.toModel(personDTO);
-        Person savedPerson = personRepository.save(personToSave);
-        return MessageReponseDTO
-                .builder()
-                .message("Created person with ID"+savedPerson.getId()).build();
-    }
-
+    Person personToSave = personMapper.toModel(personDTO);
+    Person savedPerson = personRepository.save(personToSave);
+        return createMessageResponse(savedPerson.getId(), "Created person with ID");
+}
     public List<PersonDTO> listAll() {
         List<Person> allPeople = personRepository.findAll();
         return allPeople.stream()
@@ -50,9 +46,25 @@ public class PersonService {
         personRepository.deleteById(id);
     }
 
+
+    public MessageReponseDTO updateById(Long id, PersonDTO personDTO) throws PersonNotFoundException {
+        verifyIfExists(id);
+
+        Person personToUpdate = personMapper.toModel(personDTO);
+        Person updatePerson = personRepository.save(personToUpdate);
+        return createMessageResponse(updatePerson.getId(), "Update person with ID");
+
+    }
+
     private Person verifyIfExists(Long id) throws PersonNotFoundException {
         return personRepository.findById(id)
                 .orElseThrow(() -> new PersonNotFoundException(id));
     }
 
+
+    private MessageReponseDTO createMessageResponse(Long id, String message) {
+        return MessageReponseDTO
+                .builder()
+                .message(message + id).build();
+    }
 }
