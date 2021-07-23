@@ -3,6 +3,7 @@ package br.com.yahoo.rodrigokaconde.personapi.controller;
 import br.com.yahoo.rodrigokaconde.personapi.dto.MessageReponseDTO;
 import br.com.yahoo.rodrigokaconde.personapi.dto.request.PersonDTO;
 import br.com.yahoo.rodrigokaconde.personapi.entity.Person;
+import br.com.yahoo.rodrigokaconde.personapi.exception.PersonNotFoundException;
 import br.com.yahoo.rodrigokaconde.personapi.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,5 +31,10 @@ public class PersonController {
     @GetMapping
     public List<PersonDTO> listAll(){
         return personService.listAll();
+    }
+
+    @GetMapping("/{id}")
+    public PersonDTO findById(@PathVariable Long id) throws PersonNotFoundException {
+        return personService.findById(id);
     }
 }
