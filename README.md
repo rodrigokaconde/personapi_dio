@@ -16,7 +16,7 @@
 
 ## Para executar: 
 Para executar o projeto no terminal, digite o seguinte comando:<br>
-*mvn spring-boot:run*
+`mvn spring-boot:run`
 
 Após a execução do comando acima, no seu navegador, basta abrir o seguinte endereço e visualizar a execução do projeto:<br>
 http://localhost:8080/api/v1/people
